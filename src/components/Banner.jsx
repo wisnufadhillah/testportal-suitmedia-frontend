@@ -15,19 +15,16 @@ const Banner = ({ image = "img/background.webp", title = "Ideas", subtitle = "Wh
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Update state ketika props berubah
     useEffect(() => {
         setBannerImage(image);
         setBannerTitle(title);
         setBannerSubtitle(subtitle);
     }, [image, title, subtitle]);
 
-    // Parallax effect - gambar bergerak lebih lambat dari scroll
     const parallaxOffset = scrollY * 0.5;
 
     return (
         <section id="banner" className="h-[400px] relative mt-16 overflow-hidden">
-            {/* Background Image dengan Parallax Effect dan Clip Path */}
             <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                 style={{
@@ -39,7 +36,6 @@ const Banner = ({ image = "img/background.webp", title = "Ideas", subtitle = "Wh
                 }}
             />
 
-            {/* Overlay dan Content dengan Clip Path yang sama */}
             <div
                 className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-center"
                 style={{

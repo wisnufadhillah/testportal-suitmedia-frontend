@@ -7,13 +7,13 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://suitmedia-backend.suitdev.com',
+        target: `${import.meta.env.VITE_API_PATH}`,
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '/api'),
       },
     },
     '/image-proxy': {
-        target: 'https://assets.suitdev.com',
+        target: `${import.meta.env.VITE_API_PATH_IMAGE}`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/image-proxy/, ''),
       }

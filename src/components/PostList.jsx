@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"; // Import useCallback
+import { useState, useEffect, useCallback } from "react"; 
 import PostCard from "./PostCard";
 import Pagination from "./Pagination";
 import axios from "axios";
@@ -17,14 +17,13 @@ export default function PostList() {
         localStorage.setItem("sort", sort);
     }, [currentPage, pageSize, sort]);
 
-    // Bungkus fetchPosts dengan useCallback untuk menstabilkannya
-    // Atau definisikan langsung di dalam useEffect jika tidak digunakan di luar
+    // fetch API Suitmedia
     const fetchPosts = useCallback(async () => {
         try {
             const params = {
                 "page[number]": currentPage,
                 "page[size]": pageSize,
-                append: ["small_image", "medium_image"], // Axios akan mengubah ini menjadi append[]=...&append[]=...
+                append: ["small_image", "medium_image"], 
                 sort: sort,
             };
             const url = `/api/ideas`;
@@ -33,8 +32,7 @@ export default function PostList() {
             console.log(res);
 
             const data = res.data;
-            // Baris ini dihapus karena tidak melakukan apa-apa dan menyebabkan warning
-            // data.data.forEach((post, i) => {});
+            
 
             if (data?.data && Array.isArray(data.data)) {
 
@@ -53,11 +51,11 @@ export default function PostList() {
             setTotalItems(0);
             setTotalPages(1);
         }
-    }, [currentPage, pageSize, sort]); // Tambahkan dependensi fetchPosts di sini
+    }, [currentPage, pageSize, sort]); 
 
     useEffect(() => {
         fetchPosts();
-    }, [fetchPosts]); // Tambahkan fetchPosts ke dependency array
+    }, [fetchPosts]); 
 
     const startItem = (currentPage - 1) * pageSize + 1;
     const endItem = Math.min(startItem + posts.length - 1, totalItems);
