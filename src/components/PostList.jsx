@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"; 
+import { useState, useEffect, useCallback } from "react";
 import PostCard from "./PostCard";
 import Pagination from "./Pagination";
 import axios from "axios";
@@ -23,19 +23,17 @@ export default function PostList() {
             const params = {
                 "page[number]": currentPage,
                 "page[size]": pageSize,
-                append: ["small_image", "medium_image"], 
+                append: ["small_image", "medium_image"],
                 sort: sort,
             };
-            const url = `/api/ideas`;
+            const url = `${import.meta.env.VITE_API_PATH}/api/ideas`;
             const res = await axios.get(url, { params });
 
             console.log(res);
 
             const data = res.data;
-            
 
             if (data?.data && Array.isArray(data.data)) {
-
                 setPosts(data.data);
                 const total = data.meta?.total ?? data.data.length;
                 setTotalItems(total);
@@ -51,11 +49,11 @@ export default function PostList() {
             setTotalItems(0);
             setTotalPages(1);
         }
-    }, [currentPage, pageSize, sort]); 
+    }, [currentPage, pageSize, sort]);
 
     useEffect(() => {
         fetchPosts();
-    }, [fetchPosts]); 
+    }, [fetchPosts]);
 
     const startItem = (currentPage - 1) * pageSize + 1;
     const endItem = Math.min(startItem + posts.length - 1, totalItems);

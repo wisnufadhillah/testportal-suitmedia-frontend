@@ -1,11 +1,11 @@
 export default function PostCard({ post }) {
     const imageUrl = post.small_image[0]?.url ?? "https://via.placeholder.com/400x300.png?text=No+Image";
-    const image = imageUrl.replace("https://assets.suitdev.com", "/image-proxy");
+    const image = imageUrl.replace(`${import.meta.env.VITE_API_PATH_IMAGE}`, "/image-proxy");
 
     console.log({
         originalUrl: imageUrl,
         proxyUrl: image,
-        fullImageData: post.small_image[0]
+        fullImageData: post.small_image[0],
     });
     return (
         <div className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition h-full flex flex-col">
