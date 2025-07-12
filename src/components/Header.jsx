@@ -1,37 +1,46 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function Header() {
-    const [show, setShow] = useState(true);
-    const lastScrollY = useRef(0);
-
-    const controlNavbar = () => {
-        if (window.scrollY > lastScrollY.current) {
-            setShow(false);
-        } else {
-            setShow(true);
-        }
-        lastScrollY.current = window.scrollY;
-    };
+const Header = () => {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [activeMenu, setActiveMenu] = useState("");
 
     useEffect(() => {
-        window.addEventListener("scroll", controlNavbar);
-        return () => window.removeEventListener("scroll", controlNavbar);
+        const handleScroll = () => {
+            const scrollTop = window.pageYOffset;
+            setIsScrolled(scrollTop > 50);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const navItems = ["Work", "About", "Services", "Ideas", "Careers", "Contact"];
-    const activeItem = "Ideas";
+    const navItems = [
+        { name: "Work", href: "#" },
+        { name: "About", href: "#" },
+        { name: "Services", href: "#" },
+        { name: "Ideas", href: "#", id: "nav-ideas" },
+        { name: "Careers", href: "#" },
+        { name: "Contact", href: "#" },
+    ];
+
+    const handleMenuClick = (menuName) => {
+        setActiveMenu(menuName);
+    };
 
     return (
-        <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${show ? "bg-white/80 backdrop-blur shadow" : "-translate-y-full"}`}>
-            <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-2">
-                <img src="img/site-logo.webp" alt="Logo Suitmedia" className="h-8" />
+        <header id="site-header" className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/90 backdrop-blur-md shadow-lg" : "bg-transparent"}`}>
+            <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+                <div className="text-orange-500 font-bold text-xl">
+                    <img src="/img/site-logo.webp" alt="Logo Suitmedia" />
+                </div>
+
                 <nav className="text-sm">
                     <ul className="flex space-x-6">
-                        {navItems.map((item) => (
-                            <li key={item}>
-                                <a href="#" className={`relative group font-semibold inline-block`}>
-                                    {item}
-                                    <span className={`absolute left-0 -bottom-1 h-0.5 bg-orange-500 transition-all duration-300 ${item === activeItem ? "w-full" : "w-0 group-hover:w-full"}`}></span>
+                        {navItems.map((item, index) => (
+                            <li key={index}>
+                                <a href={item.href} id={item.id} onClick={() => handleMenuClick(item.name)} className={`relative group font-inter font-semibold inline-block transition-colors duration-200 ${activeMenu === item.name ? "text-orange-500" : "text-gray-700 hover:text-orange-500"}`}>
+                                    {item.name}
+                                    <span className={`absolute left-0 -bottom-1 h-0.5 bg-orange-500 transition-all duration-300 ${activeMenu === item.name ? "w-full" : "w-0 group-hover:w-full"}`}></span>
                                 </a>
                             </li>
                         ))}
@@ -40,4 +49,6 @@ export default function Header() {
             </div>
         </header>
     );
-}
+};
+
+export default Header;
